@@ -1,17 +1,13 @@
 package italianrestaurant.staff;
 
-import com.sun.deploy.util.OrderedHashSet;
-import italianrestaurant.food.Dough;
 import italianrestaurant.food.Food;
-import italianrestaurant.food.Pizza;
-import italianrestaurant.food.Size;
 import italianrestaurant.supply.Order;
 import italianrestaurant.supply.OrderElement;
+import italianrestaurant.supply.OrderElementSpecificsType;
+import italianrestaurant.supply.OrderElementType;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.List;
 
 public class Waiter {
@@ -49,11 +45,11 @@ public class Waiter {
         switch (userSelection) {
             case 1:
                 System.out.println("Neapolitan! So traditional, so delicious! I'll bring it soon.");
-                OrderElement firstPizza = new OrderElement("pizza");
-                firstPizza.addSpecifics("dough", "neapolitan");
-                firstPizza.addSpecifics("sauce", "tomato");
-                firstPizza.addSpecifics("topping", "mozzarella");
-                firstPizza.addSpecifics("topping", "grana padano");
+                OrderElement firstPizza = new OrderElement(OrderElementType.PIZZA);
+                firstPizza.addSpecifics(OrderElementSpecificsType.DOUGH, "neapolitan");
+                firstPizza.addSpecifics(OrderElementSpecificsType.SAUCE, "tomato");
+                firstPizza.addSpecifics(OrderElementSpecificsType.TOPPING, "mozzarella");
+                firstPizza.addSpecifics(OrderElementSpecificsType.TOPPING, "grana padano");
                 order.addElement(firstPizza);
                 dishes = chef.prepareOrderedFood(order);
                 for (Food dish : dishes) {
@@ -62,12 +58,12 @@ public class Waiter {
                 break;
             case 2:
                 System.out.println("Meh, another yankee pizza. Fine.");
-                OrderElement secondPizza = new OrderElement("pizza");
-                secondPizza.addSpecifics("dough", "new_york");
-                secondPizza.addSpecifics("sauce", "tomato");
-                secondPizza.addSpecifics("topping", "mozzarella");
-                secondPizza.addSpecifics("topping", "prosciutto cotto");
-                secondPizza.addSpecifics("topping", "mushrooms");
+                OrderElement secondPizza = new OrderElement(OrderElementType.PIZZA);
+                secondPizza.addSpecifics(OrderElementSpecificsType.DOUGH, "new_york");
+                secondPizza.addSpecifics(OrderElementSpecificsType.SAUCE, "tomato");
+                secondPizza.addSpecifics(OrderElementSpecificsType.TOPPING, "mozzarella");
+                secondPizza.addSpecifics(OrderElementSpecificsType.TOPPING, "prosciutto cotto");
+                secondPizza.addSpecifics(OrderElementSpecificsType.TOPPING, "mushrooms");
                 order.addElement(secondPizza);
                 dishes = chef.prepareOrderedFood(order);
                 for (Food dish : dishes) {
@@ -76,12 +72,12 @@ public class Waiter {
                 break;
             case 3:
                 System.out.println("Nonna used to cut it into squares. I'll bring it soon.");
-                OrderElement thirdPizza = new OrderElement("pizza");
-                thirdPizza.addSpecifics("dough", "sicilian");
-                thirdPizza.addSpecifics("sauce", "tomato");
-                thirdPizza.addSpecifics("topping", "mozzarella");
-                thirdPizza.addSpecifics("topping", "salami milano");
-                thirdPizza.addSpecifics("topping", "olives");
+                OrderElement thirdPizza = new OrderElement(OrderElementType.PIZZA);
+                thirdPizza.addSpecifics(OrderElementSpecificsType.DOUGH, "sicilian");
+                thirdPizza.addSpecifics(OrderElementSpecificsType.SAUCE, "tomato");
+                thirdPizza.addSpecifics(OrderElementSpecificsType.TOPPING, "mozzarella");
+                thirdPizza.addSpecifics(OrderElementSpecificsType.TOPPING, "salami milano");
+                thirdPizza.addSpecifics(OrderElementSpecificsType.TOPPING, "olives");
                 order.addElement(thirdPizza);
                 dishes = chef.prepareOrderedFood(order);
                 for (Food dish : dishes) {

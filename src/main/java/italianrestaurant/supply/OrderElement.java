@@ -1,30 +1,27 @@
 package italianrestaurant.supply;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class OrderElement {
-    private final String elementType;
-    private final Map<String, Set<String>> specifics;
+    private final OrderElementType elementType;
+    private final Map<OrderElementSpecificsType, List<String>> specifics;
 
-    public OrderElement(String elementType) {
+    public OrderElement(OrderElementType elementType) {
         this.elementType = elementType;
         this.specifics = new HashMap<>();
     }
 
-    public void addSpecifics(String type, String specific){
-        Set<String> collectionOfSpecificsForType = new HashSet<>();
+    public void addSpecifics(OrderElementSpecificsType type, String specific){
+        List<String> collectionOfSpecificsForType = new ArrayList<>();
         collectionOfSpecificsForType.add(specific);
         specifics.merge(type, collectionOfSpecificsForType, (oldSpecifics, newSpecifics) -> {oldSpecifics.addAll(newSpecifics); return oldSpecifics;});
     }
 
-    public String getElementType() {
+    public OrderElementType getElementType() {
         return elementType;
     }
 
-    public Map<String, Set<String>> getSpecifics() {
+    public Map<OrderElementSpecificsType, List<String>> getSpecifics() {
         return specifics;
     }
 }
