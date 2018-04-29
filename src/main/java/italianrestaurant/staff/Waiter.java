@@ -5,9 +5,58 @@ import italianrestaurant.supply.*;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Optional;
 
-public class Waiter {
+public class Waiter implements Runnable, FoodObserver{
     private Menu menu;
+    private Kitchen kitchen;
+    private boolean thereIsNewFood;
+
+    public Waiter() {
+        menu = new Menu();
+        kitchen = Kitchen.getInstance();
+    }
+
+    @Override
+    public void update() {
+        thereIsNewFood = true;
+    }
+
+    @Override
+    public void run() {
+        // zaczynamy pracę więc się rejestrujemy
+        kitchen.registerObserver(this);
+        while (!Thread.currentThread().isInterrupted()) {
+            if (clientDemandsAttention()) {
+                handleCustomer();
+            }
+            if (thereIsNewFood) {
+                thereIsNewFood = false;
+                Optional<Food> food = kitchen.takeFood();
+                if (!food.isPresent()) {
+                    System.out.println("Mamma mia! I don't do that!!!");
+                } else {
+                    System.out.println("Here is your " + food.get());
+                }
+            }
+        }
+        // kończymy harować więc się wyrejestrowujemy
+        kitchen.unregisterObserver(this);
+    }
+
+    private boolean clientDemandsAttention() {
+        try {
+            int availableCharacters = System.in.available();
+            if (availableCharacters > 0) {
+                System.in.read(new byte[availableCharacters]);
+                return true;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            return true;
+        }
+        return false;
+    }
 
     public void handleCustomer() {
         int userSelection = 0;
@@ -35,14 +84,25 @@ public class Waiter {
         System.out.println("I can recommend you delicious pizzas!");
         menu.showMenu();
         int userSelection = getUserSelection();
-        Chef chef = new Chef();
-        Food food = chef.prepareOrderedFoodById(userSelection);
-        if (food == null) {
-            System.out.println("Mamma mia! That's not even a pizza! Vaffanculo!");
-        } else {
-            System.out.println("Here is your " + food);
-        }
+        Order order = new Order();
+        order.addElement(menu.getProductInfo(userSelection));
+        kitchen.addOrder(order);
     }
+
+//    to jest wersja co działała bez wątków
+//    private void takeOrder() {
+//        scrollTheScreen();
+//        System.out.println("I can recommend you delicious pizzas!");
+//        menu.showMenu();
+//        int userSelection = getUserSelection();
+//        Chef chef = new Chef();
+//        Optional<Food> food = chef.prepareOrderedFoodById(userSelection);
+//        if (!food.isPresent()) {
+//            System.out.println("Mamma mia! I don't do that!!!");
+//        } else {
+//            System.out.println("Here is your " + food);
+//        }
+//    }
 
     private void payTheBill() {
         scrollTheScreen();

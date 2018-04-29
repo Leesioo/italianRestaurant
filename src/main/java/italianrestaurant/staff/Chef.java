@@ -10,12 +10,40 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class Chef {
+public class Chef implements Runnable, OrderObserver{
     private Menu menu;
     private FoodFactory foodFactory;
+    private Kitchen kitchen;
+    private boolean thereIsNewOrder;
+
+    @Override
+    public void update() {
+        thereIsNewOrder = true;
+    }
+
+    @Override
+    public void run() {
+        // zaczynamy pracę więc się rejestrujemy
+        kitchen.registerObserver(this);
+        while (!Thread.currentThread().isInterrupted()) {
+            if (thereIsNewOrder) {
+                thereIsNewOrder = false;
+                Optional<Order> order = kitchen.takeOrder();
+                if (order.isPresent()) {
+                    List<Food> preparedFoods = prepareOrderedFoodWithLambda(order.get());
+                    for (Food preparedFood : preparedFoods) {
+                        kitchen.addFood(preparedFood);
+                    }
+                }
+            }
+        }
+        // kończymy harować więc się wyrejestrowujemy
+        kitchen.unregisterObserver(this);
+    }
 
     public Chef() {
         menu = new Menu();
+        kitchen = Kitchen.getInstance();
         foodFactory = new FoodFactory();
     }
 

@@ -14,8 +14,26 @@ public class FoodFactory {
                 Pizza pizza = createPizza(element);
                 return Optional.ofNullable(pizza);
             }
+            case PASTA: {
+                Pasta pasta = createPasta(element);
+                return Optional.ofNullable(pasta);
+            }
         }
         return Optional.empty();
+    }
+
+    private Pasta createPasta(OrderElement element) {
+        String pastaKind = element.getSpecifics().get(OrderElementSpecificsType.PASTA_TYPE).iterator().next();
+        String sauce = element.getSpecifics().get(OrderElementSpecificsType.SAUCE).iterator().next();
+        List<String> additions = element.getSpecifics().get(OrderElementSpecificsType.TOPPING);
+        boolean isParmezan = false;
+
+        Pasta.Builder pastaBuilder = Pasta.builder();
+        return pastaBuilder
+//                .pastaKind(pastaKind)
+                .sauce(sauce)
+                .additions(additions)
+                .build();
     }
 
     private Pizza createPizza(OrderElement element) {

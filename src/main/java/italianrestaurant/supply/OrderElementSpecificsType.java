@@ -3,5 +3,6 @@ package italianrestaurant.supply;
 public enum OrderElementSpecificsType {
     DOUGH,
     SAUCE,
-    TOPPING;
+    TOPPING,
+    PASTA_TYPE
 }
