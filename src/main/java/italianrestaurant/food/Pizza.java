@@ -2,7 +2,7 @@ package italianrestaurant.food;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
+import java.util.Objects;
 
 public class Pizza implements Food, Bakeable {
 
@@ -45,6 +45,8 @@ public class Pizza implements Food, Bakeable {
     }
 
     public static Builder builder(Dough dough, Size size) {
+        Objects.requireNonNull(dough);
+        Objects.requireNonNull(size);
         return new Builder(dough, size);
     }
 
